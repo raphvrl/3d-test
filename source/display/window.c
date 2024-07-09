@@ -24,6 +24,9 @@ window_t *window_init(const char *title, uint32_t width, uint32_t height)
         return NULL;
     }
 
+    window->width = width;
+    window->height = height;
+
     return window;
 }
 
@@ -43,4 +46,10 @@ void window_clear(const window_t *window, const color_t *color)
 void window_update(const window_t *window)
 {
     SDL_RenderPresent(window->renderer);
+}
+
+void window_draw_line(const window_t *window, int x1, int y1, int x2, int y2, const color_t *color)
+{
+    SDL_SetRenderDrawColor(window->renderer, color->r, color->g, color->b, color->a);
+    SDL_RenderDrawLine(window->renderer, x1, y1, x2, y2);
 }
