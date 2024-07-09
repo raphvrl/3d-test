@@ -32,6 +32,10 @@ int main(void)
             if (event_quit(&event)) {
                 running = false;
             }
+
+            if (event_keydown(&event, K_ESCAPE)) {
+                running = false;
+            }
         }
 
         window_clear(window, &bg);
