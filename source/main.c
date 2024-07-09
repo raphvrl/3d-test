@@ -11,7 +11,7 @@ int main(void)
 
     event_t event = event_init();
     color_t bg = C_BLACK;
-    color_t c_white = C_WHITE;
+    color_t white = C_WHITE;
 
     vec3_t vertices[] = {
         {0.0f, 0.5f, 0.0f},
@@ -33,7 +33,7 @@ int main(void)
                 running = false;
             }
 
-            if (event_keydown(&event, K_ESCAPE)) {
+            if (event_mousedown(&event, M_LEFT)) {
                 running = false;
             }
         }
@@ -50,7 +50,7 @@ int main(void)
             to.x = (to.x + 1.0f) * 0.5f * window->width;
             to.y = (-to.y + 1.0f) * 0.5f * window->height;
 
-            window_draw_line(window, from.x, from.y, to.x, to.y, &c_white);
+            window_draw_line(window, from.x, from.y, to.x, to.y, &white);
         }
 
         window_update(window);

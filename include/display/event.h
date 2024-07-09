@@ -46,8 +46,15 @@ enum e_key {
     K_Z = SDLK_z
 };
 
+enum e_mouse {
+    M_LEFT = SDL_BUTTON_LEFT,
+    M_MIDDLE = SDL_BUTTON_MIDDLE,
+    M_RIGHT = SDL_BUTTON_RIGHT
+};
+
 event_t event_init(void);
 
 bool event_poll(event_t *event);
 bool event_quit(const event_t *event);
 bool event_keydown(const event_t *event, enum e_key key);
+bool event_mousedown(const event_t *event, enum e_mouse button);
