@@ -4,6 +4,7 @@
 #include "display/key.h"
 #include "display/mouse.h"
 #include "display/clock.h"
+#include "projection/model.h"
 
 int main(void)
 {
@@ -16,31 +17,7 @@ int main(void)
     color_t bg = C_BLACK;
     color_t white = C_WHITE;
 
-    vec3_t vertices[] = {
-        {0.5f, 0.5f, 0.5f},
-        {-0.5f, 0.5f, 0.5f},
-        {-0.5f, -0.5f, 0.5f},
-        {0.5f, -0.5f, 0.5f},
-        {0.5f, 0.5f, -0.5f},
-        {-0.5f, 0.5f, -0.5f},
-        {-0.5f, -0.5f, -0.5f},
-        {0.5f, -0.5f, -0.5f}
-    };
-
-    uint32_t edges[] = {
-        0, 1,
-        1, 2,
-        2, 3,
-        3, 0,
-        4, 5,
-        5, 6,
-        6, 7,
-        7, 4,
-        0, 4,
-        1, 5,
-        2, 6,
-        3, 7
-    };
+    model_t *model = model_init("models/poly.obj");
 
     camera_t *camera = camera_init((vec3_t){0.0f, 0.0f, 3.0f});
 
@@ -88,46 +65,56 @@ int main(void)
         vec2_t mov = get_mouse_mov();
         camera_rotate(camera, mov.x, mov.y);
 
-        mat4_t model = mat4_init(1.0f);
-
         camera_update(camera, (float)window->width / (float)window->height);
 
         window_clear(window, &bg);
 
-        for (uint32_t i = 0; i < 12; i++) {
-            vec3_t  v1 = vertices[edges[i * 2]];
-            vec3_t  v2 = vertices[edges[i * 2 + 1]];
+        mesh_t *mesh = model->mesh;
 
-            vec4_t t1 = {v1.x, v1.y, v1.z, 1.0f};
-            vec4_t t2 = {v2.x, v2.y, v2.z, 1.0f};
+        // indice and vertice of .obj
+        for (uint32_t i = 0; i < mesh->i_size; i += 3) {
 
-            mat4_t tmp = mat4_mul(&camera->projection, &camera->view);
-            tmp = mat4_mul(&tmp, &model);
+            vec3_t v1 = mesh->vertices[mesh->indices[i] - 1];
+            vec3_t v2 = mesh->vertices[mesh->indices[i + 1] - 1];
+            vec3_t v3 = mesh->vertices[mesh->indices[i + 2] - 1];
 
-            vec4_t p1 = mat4_mulv(&tmp, &t1);
-            vec4_t p2 = mat4_mulv(&tmp, &t2);
+            mat4_t mvp = mat4_mul(&camera->projection, &camera->view);
+            mvp = mat4_mul(&mvp, &model->transform);
 
-            if (p1.w < 0.0f || p2.w < 0.0f) {
-                continue;
-            }
+            vec4_t p1 = vec4_init3(&v1, 1.0f);
+            vec4_t p2 = vec4_init3(&v2, 1.0f);
+            vec4_t p3 = vec4_init3(&v3, 1.0f);
+
+            p1 = mat4_mulv(&mvp, &p1);
+            p2 = mat4_mulv(&mvp, &p2);
+            p3 = mat4_mulv(&mvp, &p3);
 
             p1 = vec4_divf(&p1, p1.w);
             p2 = vec4_divf(&p2, p2.w);
+            p3 = vec4_divf(&p3, p3.w);
 
-            p1.x = p1.x * window->width / 2.0f + window->width / 2.0f;
-            p1.y = -p1.y * window->height / 2.0f + window->height / 2.0f;
+            p1.x = p1.x * window->width / 2 + window->width / 2;
+            p1.y = -p1.y * window->height / 2 + window->height / 2;
 
-            p2.x = p2.x * window->width / 2.0f + window->width / 2.0f;
-            p2.y = -p2.y * window->height / 2.0f + window->height / 2.0f;
+            p2.x = p2.x * window->width / 2 + window->width / 2;
+            p2.y = -p2.y * window->height / 2 + window->height / 2;
+
+            p3.x = p3.x * window->width / 2 + window->width / 2;
+            p3.y = -p3.y * window->height / 2 + window->height / 2;
 
             window_draw_line(window, p1.x, p1.y, p2.x, p2.y, &white);
+            window_draw_line(window, p2.x, p2.y, p3.x, p3.y, &white);
+            window_draw_line(window, p3.x, p3.y, p1.x, p1.y, &white);
         }
+
+
 
         window_update(window);
 
         clock_update(clock);
     }
 
+    model_destroy(model);
     window_destroy(window);
     camera_destroy(camera);
 
