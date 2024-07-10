@@ -14,14 +14,3 @@ bool event_quit(const event_t *event)
 {
     return event->event.type == SDL_QUIT;
 }
-
-bool event_keydown(const event_t *event, enum e_key key)
-{
-    SDL_Keycode sdl_key = key;
-    return event->event.type == SDL_KEYDOWN && event->event.key.keysym.sym == sdl_key;
-}
-
-bool event_mousedown(const event_t *event, enum e_mouse button)
-{
-    return event->event.type == SDL_MOUSEBUTTONDOWN && event->event.button.button == button;
-}

@@ -26,3 +26,5 @@ float vec4_dot(const vec4_t *a, const vec4_t *b);
 float vec4_length(const vec4_t *a);
 vec4_t vec4_normalize(const vec4_t *a);
 vec4_t vec4_cross(const vec4_t *a, const vec4_t *b);
+
+void vec4_print(const vec4_t *a);

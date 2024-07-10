@@ -22,6 +22,10 @@ vec3_t vec3_mul(const vec3_t *a, const vec3_t *b)
 
 vec3_t vec3_div(const vec3_t *a, const vec3_t *b)
 {
+    if (b->x == 0 || b->y == 0 || b->z == 0) {
+        return (vec3_t){0};
+    }
+
     return (vec3_t){a->x / b->x, a->y / b->y, a->z / b->z};
 }
 
@@ -42,6 +46,10 @@ vec3_t vec3_mulf(const vec3_t *a, float b)
 
 vec3_t vec3_divf(const vec3_t *a, float b)
 {
+    if (b == 0) {
+        return (vec3_t){0};
+    }
+
     return (vec3_t){a->x / b, a->y / b, a->z / b};
 }
 

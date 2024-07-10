@@ -27,6 +27,10 @@ vec4_t vec4_mul(const vec4_t *a, const vec4_t *b)
 
 vec4_t vec4_div(const vec4_t *a, const vec4_t *b)
 {
+    if (b->x == 0 || b->y == 0 || b->z == 0 || b->w == 0) {
+        return (vec4_t){0};
+    }
+
     return (vec4_t){a->x / b->x, a->y / b->y, a->z / b->z, a->w / b->w};
 }
 
@@ -47,6 +51,10 @@ vec4_t vec4_mulf(const vec4_t *a, float b)
 
 vec4_t vec4_divf(const vec4_t *a, float b)
 {
+    if (b == 0) {
+        return (vec4_t){0};
+    }
+
     return (vec4_t){a->x / b, a->y / b, a->z / b, a->w / b};
 }
 
@@ -64,4 +72,19 @@ vec4_t vec4_normalize(const vec4_t *a)
 {
     float len = vec4_length(a);
     return (vec4_t){a->x / len, a->y / len, a->z / len, a->w / len};
+}
+
+vec4_t vec4_cross(const vec4_t *a, const vec4_t *b)
+{
+    return (vec4_t){
+        a->y * b->z - a->z * b->y,
+        a->z * b->x - a->x * b->z,
+        a->x * b->y - a->y * b->x,
+        0.0f
+    };
+}
+
+void vec4_print(const vec4_t *a)
+{
+    printf("vec4: (%f, %f, %f, %f)\n", a->x, a->y, a->z, a->w);
 }

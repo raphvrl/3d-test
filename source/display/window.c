@@ -48,7 +48,7 @@ void window_update(const window_t *window)
     SDL_RenderPresent(window->renderer);
 }
 
-void window_draw_line(const window_t *window, int x1, int y1, int x2, int y2, const color_t *color)
+void window_draw_line(const window_t *window, float x1, float y1, float x2, float y2, const color_t *color)
 {
     SDL_SetRenderDrawColor(window->renderer, color->r, color->g, color->b, color->a);
     SDL_RenderDrawLine(window->renderer, x1, y1, x2, y2);
