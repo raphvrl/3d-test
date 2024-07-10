@@ -1,9 +1,8 @@
 #include "display/window.h"
 #include "display/event.h"
 #include "projection/camera.h"
-#include "math/vec3.h"
-#include "math/angle.h"
 #include "display/key.h"
+#include "display/mouse.h"
 #include "display/clock.h"
 
 int main(void)
@@ -58,35 +57,36 @@ int main(void)
 
         float speed = 1.0f * clock->delta;
 
+        if (is_keydown(K_ESCAPE)) {
+            running = false;
+        }
+
         if (is_keydown(K_W)) {
-            vec3_t velocity = vec3_mulf(&camera->front, speed);
-            camera->position = vec3_add(&camera->position, &velocity);
+            camera_move_forward(camera, speed);
         }
 
         if (is_keydown(K_S)) {
-            vec3_t velocity = vec3_mulf(&camera->front, speed);
-            camera->position = vec3_sub(&camera->position, &velocity);
+            camera_move_backward(camera, speed);
         }
 
         if (is_keydown(K_A)) {
-            vec3_t velocity = vec3_mulf(&camera->right, speed);
-            camera->position = vec3_add(&camera->position, &velocity);
+            camera_move_left(camera, speed);
         }
 
         if (is_keydown(K_D)) {
-            vec3_t velocity = vec3_mulf(&camera->right, speed);
-            camera->position = vec3_sub(&camera->position, &velocity);
+            camera_move_right(camera, speed);
         }
 
         if (is_keydown(K_SPACE)) {
-            vec3_t velocity = vec3_mulf(&camera->up, speed);
-            camera->position = vec3_add(&camera->position, &velocity);
+            camera_move_up(camera, speed);
         }
 
         if (is_keydown(K_LSHIFT)) {
-            vec3_t velocity = vec3_mulf(&camera->up, speed);
-            camera->position = vec3_sub(&camera->position, &velocity);
+            camera_move_down(camera, speed);
         }
+
+        vec2_t mov = get_mouse_mov();
+        camera_rotate(camera, mov.x, mov.y);
 
         mat4_t model = mat4_init(1.0f);
 

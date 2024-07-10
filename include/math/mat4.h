@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 #include <math/vec4.h>
+#include <math/vec3.h>
+#include <math/vec2.h>
 
 typedef struct mat4_s {
     float m[4][4];

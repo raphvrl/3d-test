@@ -11,6 +11,7 @@ typedef struct camera_s {
     vec3_t up;
     vec3_t right;
 
+    float sensitivity;
     float yaw;
     float pitch;
     float fov;
@@ -25,6 +26,13 @@ typedef struct camera_s {
 camera_t *camera_init(vec3_t position);
 
 void camera_update(camera_t *camera, float aspect);
+void camera_move_forward(camera_t *camera, float speed);
+void camera_move_backward(camera_t *camera, float speed);
+void camera_move_left(camera_t *camera, float speed);
+void camera_move_right(camera_t *camera, float speed);
+void camera_move_up(camera_t *camera, float speed);
+void camera_move_down(camera_t *camera, float speed);
+void camera_rotate(camera_t *camera, float xoffset, float yoffset);
 
 void camera_destroy(camera_t *camera);
 

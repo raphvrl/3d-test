@@ -12,6 +12,7 @@ camera_t *camera_init(vec3_t position)
     camera->up = (vec3_t){0.0f, 1.0f, 0.0f};
     camera->right = (vec3_t){1.0f, 0.0f, 0.0f};
 
+    camera->sensitivity = 0.1f;
     camera->yaw = -90.0f;
     camera->pitch = 0.0f;
 
@@ -33,12 +34,62 @@ void camera_update(camera_t *camera, float aspect)
         sinf(DEG_TO_RAD(camera->pitch)),
         sinf(DEG_TO_RAD(camera->yaw)) * cosf(DEG_TO_RAD(camera->pitch))
     };
-
     camera->front = vec3_normalize(&front);
+    camera->right = vec3_cross(&front, &camera->up);
     vec3_t target = vec3_add(&camera->position, &camera->front);
 
     camera->view = mat4_set_view(&camera->position, &target, &camera->up);
     camera->projection = mat4_set_projection(camera->fov, aspect, camera->near, camera->far);
+}
+
+void camera_move_forward(camera_t *camera, float speed)
+{
+    vec3_t velocity = vec3_mulf(&camera->front, speed);
+    camera->position = vec3_add(&camera->position, &velocity);
+}
+
+void camera_move_backward(camera_t *camera, float speed)
+{
+    vec3_t velocity = vec3_mulf(&camera->front, speed);
+    camera->position = vec3_sub(&camera->position, &velocity);
+}
+
+void camera_move_left(camera_t *camera, float speed)
+{
+    vec3_t velocity = vec3_mulf(&camera->right, speed);
+    camera->position = vec3_add(&camera->position, &velocity);
+}
+
+void camera_move_right(camera_t *camera, float speed)
+{
+    vec3_t velocity = vec3_mulf(&camera->right, speed);
+    camera->position = vec3_sub(&camera->position, &velocity);
+}
+
+void camera_move_up(camera_t *camera, float speed)
+{
+    vec3_t velocity = vec3_mulf(&camera->up, speed);
+    camera->position = vec3_add(&camera->position, &velocity);
+}
+
+void camera_move_down(camera_t *camera, float speed)
+{
+    vec3_t velocity = vec3_mulf(&camera->up, speed);
+    camera->position = vec3_sub(&camera->position, &velocity);
+}
+
+void camera_rotate(camera_t *camera, float xoffset, float yoffset)
+{
+    camera->yaw -= xoffset * camera->sensitivity;
+    camera->pitch -= yoffset * camera->sensitivity;
+
+    if (camera->pitch > 89.0f) {
+        camera->pitch = 89.0f;
+    }
+
+    if (camera->pitch < -89.0f) {
+        camera->pitch = -89.0f;
+    }
 }
 
 void camera_destroy(camera_t *camera)

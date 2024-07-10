@@ -3,6 +3,9 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#include "display/key.h"
+#include "math/vec2.h"
+
 typedef struct event_s {
     SDL_Event event;
 } event_t;

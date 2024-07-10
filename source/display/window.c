@@ -24,6 +24,8 @@ window_t *window_init(const char *title, uint32_t width, uint32_t height)
         return NULL;
     }
 
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+
     window->width = width;
     window->height = height;
 

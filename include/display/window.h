@@ -3,6 +3,7 @@
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 
+#include <math/mat4.h>
 #include "display/color.h"
 
 typedef struct window_s {
