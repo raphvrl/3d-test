@@ -19,3 +19,4 @@ void window_clear(const window_t *window, const color_t *color);
 void window_update(const window_t *window);
 
 void window_draw_line(const window_t *window, float x1, float y1, float x2, float y2, const color_t *color);
+void window_draw_triangle(const window_t *window, float x1, float y1, float x2, float y2, float x3, float y3, const color_t *color);

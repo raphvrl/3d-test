@@ -55,3 +55,11 @@ void window_draw_line(const window_t *window, float x1, float y1, float x2, floa
     SDL_SetRenderDrawColor(window->renderer, color->r, color->g, color->b, color->a);
     SDL_RenderDrawLine(window->renderer, x1, y1, x2, y2);
 }
+
+void window_draw_triangle(const window_t *window, float x1, float y1, float x2, float y2, float x3, float y3, const color_t *color)
+{
+    SDL_SetRenderDrawColor(window->renderer, color->r, color->g, color->b, color->a);
+    SDL_RenderDrawLine(window->renderer, x1, y1, x2, y2);
+    SDL_RenderDrawLine(window->renderer, x2, y2, x3, y3);
+    SDL_RenderDrawLine(window->renderer, x3, y3, x1, y1);
+}

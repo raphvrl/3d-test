@@ -59,11 +59,7 @@ void model_render(const model_t *model, const window_t *window, const camera_t *
         p3.x = p3.x * window->width / 2 + window->width / 2;
         p3.y = -p3.y * window->height / 2 + window->height / 2;
 
-        window_draw_line(window, p1.x, p1.y, p2.x, p2.y, &C_WHITE);
-
-        window_draw_line(window, p2.x, p2.y, p3.x, p3.y, &C_WHITE);
-
-        window_draw_line(window, p3.x, p3.y, p1.x, p1.y, &C_WHITE);
+        window_draw_triangle(window, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, &C_WHITE);
     }
 }
 
