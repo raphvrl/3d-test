@@ -14,10 +14,8 @@ model_t *model_init(const char *path)
     model->mesh = mesh_init(path);
     model->position = vec3_init(0.0f);
     model->scale = vec3_init(1.0f);
+    model->rotation = vec3_init(0.0f);
     model->model = mat4_init(1.0f);
-    model->pitch = 0.0f;
-    model->yaw = 0.0f;
-    model->roll = 0.0f;
 
     return model;
 }
@@ -27,9 +25,7 @@ void model_update(model_t *model)
     model->model = mat4_init(1.0f);
     model->model = mat4_translate(&model->model, &model->position);
     model->model = mat4_scale(&model->model, &model->scale);
-    model->model = mat4_rotate_x(&model->model, model->pitch);
-    model->model = mat4_rotate_y(&model->model, model->yaw);
-    model->model = mat4_rotate_z(&model->model, model->roll);
+    model->model = mat4_rotate(&model->model, &model->rotation);
 }
 
 void model_render(const model_t *model, const window_t *window, const camera_t *camera)

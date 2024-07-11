@@ -79,73 +79,69 @@ vec4_t mat4_mulv(const mat4_t *a, const vec4_t *b)
     return c;
 }
 
-mat4_t mat4_translate(const mat4_t *m, const vec3_t *v)
+mat4_t mat4_translate(const mat4_t *a, const vec3_t *t)
 {
-    mat4_t res = {0};
+    mat4_t res = *a;
 
     res.m[0][0] = 1.0f;
     res.m[1][1] = 1.0f;
     res.m[2][2] = 1.0f;
     res.m[3][3] = 1.0f;
-    res.m[0][3] = v->x;
-    res.m[1][3] = v->y;
-    res.m[2][3] = v->z;
+    res.m[3][0] += t->x;
+    res.m[3][1] += t->y;
+    res.m[3][2] += t->z;
 
-    return mat4_mul(m, &res);
+    return mat4_mul(a, &res);
 }
 
-mat4_t mat4_scale(const mat4_t *m, const vec3_t *v)
+mat4_t mat4_scale(const mat4_t *a, const vec3_t *s)
+{
+    mat4_t res = *a;
+
+    res.m[0][0] = s->x;
+    res.m[1][1] = s->y;
+    res.m[2][2] = s->z;
+    res.m[3][3] = 1.0f;
+
+    return mat4_mul(a, &res);
+}
+
+mat4_t mat4_rotate(const mat4_t *a, const vec3_t *r)
 {
     mat4_t res = {0};
 
-    res.m[0][0] = v->x;
-    res.m[1][1] = v->y;
-    res.m[2][2] = v->z;
+    float x = DEG_TO_RAD(r->x);
+    float y = DEG_TO_RAD(r->y);
+    float z = DEG_TO_RAD(r->z);
+
+    float cx = cosf(x);
+    float sx = sinf(x);
+    float cy = cosf(y);
+    float sy = sinf(y);
+    float cz = cosf(z);
+    float sz = sinf(z);
+
+    res.m[0][0] = cy * cz;
+    res.m[0][1] = cy * sz;
+    res.m[0][2] = -sy;
+    res.m[0][3] = 0.0f;
+
+    res.m[1][0] = sx * sy * cz - cx * sz;
+    res.m[1][1] = sx * sy * sz + cx * cz;
+    res.m[1][2] = sx * cy;
+    res.m[1][3] = 0.0f;
+
+    res.m[2][0] = cx * sy * cz + sx * sz;
+    res.m[2][1] = cx * sy * sz - sx * cz;
+    res.m[2][2] = cx * cy;
+    res.m[2][3] = 0.0f;
+
+    res.m[3][0] = 0.0f;
+    res.m[3][1] = 0.0f;
+    res.m[3][2] = 0.0f;
     res.m[3][3] = 1.0f;
 
-    return mat4_mul(m, &res);
-}
-
-mat4_t mat4_rotate_x(const mat4_t *m, float a)
-{
-    mat4_t res = {0};
-
-    res.m[0][0] = 1.0f;
-    res.m[1][1] = cosf(a);
-    res.m[1][2] = -sinf(a);
-    res.m[2][1] = sinf(a);
-    res.m[2][2] = cosf(a);
-    res.m[3][3] = 1.0f;
-
-    return mat4_mul(m, &res);
-}
-
-mat4_t mat4_rotate_y(const mat4_t *m, float a)
-{
-    mat4_t res = {0};
-
-    res.m[0][0] = cosf(a);
-    res.m[0][2] = sinf(a);
-    res.m[1][1] = 1.0f;
-    res.m[2][0] = -sinf(a);
-    res.m[2][2] = cosf(a);
-    res.m[3][3] = 1.0f;
-
-    return mat4_mul(m, &res);
-}
-
-mat4_t mat4_rotate_z(const mat4_t *m, float a)
-{
-    mat4_t res = {0};
-
-    res.m[0][0] = cosf(a);
-    res.m[0][1] = -sinf(a);
-    res.m[1][0] = sinf(a);
-    res.m[1][1] = cosf(a);
-    res.m[2][2] = 1.0f;
-    res.m[3][3] = 1.0f;
-
-    return mat4_mul(m, &res);
+    return mat4_mul(a, &res);
 }
 
 void mat4_print(const mat4_t *a)
