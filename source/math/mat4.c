@@ -12,6 +12,18 @@ mat4_t mat4_init(float d)
     return res;
 }
 
+mat4_t mat4_initv(const vec4_t *v)
+{
+    mat4_t res = {0};
+
+    res.m[0][0] = v->x;
+    res.m[1][1] = v->y;
+    res.m[2][2] = v->z;
+    res.m[3][3] = v->w;
+
+    return res;
+}
+
 mat4_t mat4_add(const mat4_t *a, const mat4_t *b)
 {
     mat4_t c = {0};
@@ -65,6 +77,33 @@ vec4_t mat4_mulv(const mat4_t *a, const vec4_t *b)
     };
 
     return c;
+}
+
+mat4_t mat4_translate(const mat4_t *m, const vec3_t *v)
+{
+    mat4_t res = {0};
+
+    res.m[0][0] = 1.0f;
+    res.m[1][1] = 1.0f;
+    res.m[2][2] = 1.0f;
+    res.m[3][3] = 1.0f;
+    res.m[0][3] = v->x;
+    res.m[1][3] = v->y;
+    res.m[2][3] = v->z;
+
+    return mat4_mul(m, &res);
+}
+
+mat4_t mat4_scale(const mat4_t *m, const vec3_t *v)
+{
+    mat4_t res = {0};
+
+    res.m[0][0] = v->x;
+    res.m[1][1] = v->y;
+    res.m[2][2] = v->z;
+    res.m[3][3] = 1.0f;
+
+    return mat4_mul(m, &res);
 }
 
 mat4_t mat4_rotate_x(const mat4_t *m, float a)

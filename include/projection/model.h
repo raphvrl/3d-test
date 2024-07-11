@@ -10,6 +10,7 @@
 typedef struct model_s {
     mat4_t model;
     vec3_t position;
+    vec3_t scale;
     mesh_t *mesh;
 
     float pitch, yaw, roll;

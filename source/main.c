@@ -66,10 +66,6 @@ int main(void)
 
         camera_update(camera, (float)window->width / (float)window->height);
 
-        model->pitch += 0.5f * clock->delta;
-        model->yaw += 1.0f * clock->delta;
-        model->roll += 0.5f * clock->delta;
-
         model_update(model);
 
         window_clear(window, &bg);
