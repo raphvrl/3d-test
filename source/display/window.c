@@ -56,10 +56,15 @@ void window_draw_line(const window_t *window, float x1, float y1, float x2, floa
     SDL_RenderDrawLine(window->renderer, x1, y1, x2, y2);
 }
 
-void window_draw_triangle(const window_t *window, float x1, float y1, float x2, float y2, float x3, float y3, const color_t *color)
+void window_draw_triangle(const window_t *window, const vec2_t *v1, const vec2_t *v2, const vec2_t *v3, const color_t *color)
 {
     SDL_SetRenderDrawColor(window->renderer, color->r, color->g, color->b, color->a);
-    SDL_RenderDrawLine(window->renderer, x1, y1, x2, y2);
-    SDL_RenderDrawLine(window->renderer, x2, y2, x3, y3);
-    SDL_RenderDrawLine(window->renderer, x3, y3, x1, y1);
+
+    SDL_Point points[3] = {
+        {v1->x, v1->y},
+        {v2->x, v2->y},
+        {v3->x, v3->y}
+    };
+
+    SDL_RenderDrawLines(window->renderer, points, 3);
 }

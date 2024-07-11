@@ -61,6 +61,19 @@ void load_obj(char const *path, mesh_t *mesh)
     fclose(file);
 }
 
+vec4_t get_vertex(const mesh_t *mesh, uint32_t i)
+{
+    return vec4_init3(&mesh->vertices[mesh->indices[i] - 1], 1.0f);
+}
+
+vec2_t vertex_to_screen(const vec4_t *vertex, uint32_t width, uint32_t height)
+{
+    return (vec2_t){
+        vertex->x * width / 2.0f + width / 2.0f,
+        -vertex->y * height / 2.0f + height / 2.0f
+    };
+}
+
 void mesh_destroy(mesh_t *mesh)
 {
     free(mesh->vertices);

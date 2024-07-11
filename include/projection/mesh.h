@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include "math/vec3.h"
+#include "math/mat4.h"
 
 typedef struct mesh_s {
     vec3_t *vertices;
@@ -14,5 +14,8 @@ typedef struct mesh_s {
 mesh_t *mesh_init(const char *path);
 
 void load_obj(const char *path, mesh_t *mesh);
+
+vec4_t get_vertex(const mesh_t *mesh, uint32_t i);
+vec2_t vertex_to_screen(const vec4_t *vertex, uint32_t width, uint32_t height);
 
 void mesh_destroy(mesh_t *mesh);

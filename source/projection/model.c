@@ -34,9 +34,9 @@ void model_render(const model_t *model, const window_t *window, const camera_t *
     mvp = mat4_mul(&mvp, &model->model);
 
     for (uint32_t i = 0; i < model->mesh->i_size; i += 3) {
-        vec4_t p1 = vec4_init3(&model->mesh->vertices[model->mesh->indices[i] - 1], 1.0f);
-        vec4_t p2 = vec4_init3(&model->mesh->vertices[model->mesh->indices[i + 1] - 1], 1.0f);
-        vec4_t p3 = vec4_init3(&model->mesh->vertices[model->mesh->indices[i + 2] - 1], 1.0f);
+        vec4_t p1 = get_vertex(model->mesh, i);
+        vec4_t p2 = get_vertex(model->mesh, i + 1);
+        vec4_t p3 = get_vertex(model->mesh, i + 2);
 
         p1 = mat4_mulv(&mvp, &p1);
         p2 = mat4_mulv(&mvp, &p2);
@@ -50,16 +50,11 @@ void model_render(const model_t *model, const window_t *window, const camera_t *
         p2 = vec4_divf(&p2, p2.w);
         p3 = vec4_divf(&p3, p3.w);
 
-        p1.x = p1.x * window->width / 2 + window->width / 2;
-        p1.y = -p1.y * window->height / 2 + window->height / 2;
+        vec2_t s1 = vertex_to_screen(&p1, window->width, window->height);
+        vec2_t s2 = vertex_to_screen(&p2, window->width, window->height);
+        vec2_t s3 = vertex_to_screen(&p3, window->width, window->height);
 
-        p2.x = p2.x * window->width / 2 + window->width / 2;
-        p2.y = -p2.y * window->height / 2 + window->height / 2;
-
-        p3.x = p3.x * window->width / 2 + window->width / 2;
-        p3.y = -p3.y * window->height / 2 + window->height / 2;
-
-        window_draw_triangle(window, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, &C_WHITE);
+        window_draw_triangle(window, &s1, &s2, &s3, &C_WHITE);
     }
 }
 
