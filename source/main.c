@@ -6,6 +6,8 @@
 #include "display/clock.h"
 #include "projection/model.h"
 
+#include <stdio.h>
+
 int main(void)
 {
     window_t *window = window_init("3D", 800, 600);
@@ -16,7 +18,11 @@ int main(void)
     event_t event = event_init();
     color_t bg = C_BLACK;
 
-    model_t *model = model_init("models/cube.obj");
+    model_t *model = model_init("models/monke.obj");
+    if (!model) {
+        perror("Failed to load model");
+        return 1;
+    }
 
     camera_t *camera = camera_init((vec3_t){0.0f, 0.0f, 3.0f});
 
@@ -31,7 +37,7 @@ int main(void)
             }
         }
 
-        float speed = 1.0f * clock->delta;
+        float speed = 10.0f * clock->delta;
 
         if (is_keydown(K_ESCAPE)) {
             running = false;
@@ -75,11 +81,16 @@ int main(void)
         window_update(window);
 
         clock_update(clock);
+
+        char fps[32];
+        snprintf(fps, 32, "FPS: %.0f", clock->fps);
+        window_set_title(window, fps);
     }
 
     model_destroy(model);
-    window_destroy(window);
+    clock_destroy(clock);
     camera_destroy(camera);
+    window_destroy(window);
 
     return 0;
 }

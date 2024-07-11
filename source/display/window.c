@@ -50,6 +50,11 @@ void window_update(const window_t *window)
     SDL_RenderPresent(window->renderer);
 }
 
+void window_set_title(const window_t *window, const char *title)
+{
+    SDL_SetWindowTitle(window->window, title);
+}
+
 void window_draw_line(const window_t *window, float x1, float y1, float x2, float y2, const color_t *color)
 {
     SDL_SetRenderDrawColor(window->renderer, color->r, color->g, color->b, color->a);

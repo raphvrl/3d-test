@@ -42,7 +42,8 @@ void model_render(const model_t *model, const window_t *window, const camera_t *
         p2 = mat4_mulv(&mvp, &p2);
         p3 = mat4_mulv(&mvp, &p3);
 
-        if (p1.w <= 0 || p2.w <= 0 || p3.w <= 0) {
+        if ((p1.w <= camera->near) || (p2.w <= camera->near) || (p3.w <= camera->near) ||
+            (p1.w >= camera->far) || (p2.w >= camera->far) || (p3.w >= camera->far)) {
             continue;
         }
 
