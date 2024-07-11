@@ -17,4 +17,8 @@ mat4_t mat4_mul(const mat4_t *a, const mat4_t *b);
 
 vec4_t mat4_mulv(const mat4_t *a, const vec4_t *b);
 
+mat4_t mat4_rotate_x(const mat4_t *a, float angle);
+mat4_t mat4_rotate_y(const mat4_t *a, float angle);
+mat4_t mat4_rotate_z(const mat4_t *a, float angle);
+
 void mat4_print(const mat4_t *a);

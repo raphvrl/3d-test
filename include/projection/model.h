@@ -8,10 +8,16 @@
 
 
 typedef struct model_s {
-    mat4_t transform;
+    mat4_t model;
+    vec3_t position;
     mesh_t *mesh;
+
+    float pitch, yaw, roll;
 } model_t;
 
 model_t *model_init(const char *path);
+
+void model_update(model_t *model);
+void model_render(const model_t *model, const window_t *window, const camera_t *camera);
 
 void model_destroy(model_t *model);

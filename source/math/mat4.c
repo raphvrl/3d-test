@@ -67,6 +67,48 @@ vec4_t mat4_mulv(const mat4_t *a, const vec4_t *b)
     return c;
 }
 
+mat4_t mat4_rotate_x(const mat4_t *m, float a)
+{
+    mat4_t res = {0};
+
+    res.m[0][0] = 1.0f;
+    res.m[1][1] = cosf(a);
+    res.m[1][2] = -sinf(a);
+    res.m[2][1] = sinf(a);
+    res.m[2][2] = cosf(a);
+    res.m[3][3] = 1.0f;
+
+    return mat4_mul(m, &res);
+}
+
+mat4_t mat4_rotate_y(const mat4_t *m, float a)
+{
+    mat4_t res = {0};
+
+    res.m[0][0] = cosf(a);
+    res.m[0][2] = sinf(a);
+    res.m[1][1] = 1.0f;
+    res.m[2][0] = -sinf(a);
+    res.m[2][2] = cosf(a);
+    res.m[3][3] = 1.0f;
+
+    return mat4_mul(m, &res);
+}
+
+mat4_t mat4_rotate_z(const mat4_t *m, float a)
+{
+    mat4_t res = {0};
+
+    res.m[0][0] = cosf(a);
+    res.m[0][1] = -sinf(a);
+    res.m[1][0] = sinf(a);
+    res.m[1][1] = cosf(a);
+    res.m[2][2] = 1.0f;
+    res.m[3][3] = 1.0f;
+
+    return mat4_mul(m, &res);
+}
+
 void mat4_print(const mat4_t *a)
 {
     for (uint8_t i = 0; i < 4; i++) {
